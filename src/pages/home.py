@@ -8,10 +8,10 @@ import pandas as pd
 from assets.database import DatabaseManager
 
 # Usar Database para obtener datos
-with DatabaseManager("BDK_owner", "Qde9y0ftCPVg", "ep-rapid-recipe-a57yu1fp.us-east-2.aws.neon.tech", "5432", "BDK") as db:
-    data = db.fetch_data("SELECT * FROM wind")
+#with DatabaseManager("BDK_owner", "Qde9y0ftCPVg", "ep-rapid-recipe-a57yu1fp.us-east-2.aws.neon.tech", "5432", "BDK") as db:
+    #data = db.fetch_data("SELECT * FROM wind")
 
-
+data = pd.read_csv('D:\Dataviz\SpeedWind\SpeedWindDash\src\data\wind_dataset2.csv')
 
 dash.register_page(__name__, path='/', name='Home', title='Wind | Home')
 
