@@ -13,8 +13,8 @@ import seaborn as sns
 
 
 # Usar Database para obtener datos
-with DatabaseManager("BDK_owner", "Qde9y0ftCPVg", "ep-rapid-recipe-a57yu1fp.us-east-2.aws.neon.tech", "5432", "BDK") as db:
-    data = db.fetch_data("SELECT * FROM wind")
+#data = pd.read_csv("D:\Dataviz\SpeedWind\SpeedWindDash\src\data\wind_dataset2.csv")
+data = pd.read_csv("src/data/wind_dataset2.csv")
 
 
 dash.register_page(__name__, name='1-EDA', title='Wind | EDA')
@@ -104,42 +104,42 @@ layout = dbc.Container([
     )
 def plot_data(_Variable):
     _data = data.iloc[:2500]
-    _dataG = _data['wind']
+    _dataG = _data['WIND']
     _titulo  = 'Wind Speed'
     _tituloD = 'Distribucción Wind Speed'
     _yaxisTitulo = 'Wind'
-    _Value = 'wind'
+    _Value = 'WIND'
     
     if _Variable == 'SpeedWind':
-        _dataG = _data['wind']
+        _dataG = _data['WIND']
         _titulo  = 'Wind Speed'
         _tituloD = 'Distribucción Wind Speed'
         _yaxisTitulo = 'Wind'
-        _Value = 'wind'
+        _Value = 'WIND'
     if _Variable == 'Rain':
-        _dataG = _data['rain']
+        _dataG = _data['RAIN']
         _titulo  = 'Rain'
         _tituloD = 'Distribucción Rain'
         _yaxisTitulo = 'Rain'
         _Value = 'rain'
     if _Variable == 'Tmax':
-        _dataG = _data['t_max']
+        _dataG = _data['T.MAX']
         _titulo  = 'Temperatura Maxima'
         _tituloD = 'Distribucción Temp. Max'
         _yaxisTitulo = 'Temp. Max'
-        _Value = 't_max'
+        _Value = 'T.MAX'
     if _Variable == 'Tmin':
-        _dataG = _data['t_min']
+        _dataG = _data['T.MIN']
         _titulo  = 'Temperatura Minima'
         _tituloD = 'Distribucción Temp. Min'
         _yaxisTitulo = 'Temp. Min'
         _Value = 't_min'
     if _Variable == 'Tming':
-        _dataG = _data['t_min_g']
+        _dataG = _data['T.MIN.G']
         _titulo  = 'Temperatura Minima G'
         _tituloD = 'Distribucción Temp. Min G'
         _yaxisTitulo = 'Temp. Min G'
-        _Value = 't_min_g'
+        _Value = 'T.MIN.G'
 
 
         
@@ -173,8 +173,8 @@ def plot_data(_Variable):
     
     fig2 = None
     fig2 = go.Figure(layout=my_figlayout)
-    fig2 = fig2.add_trace(go.Scatter(x=_dataG, y=data['wind'], mode='markers', name='Datos'))
-    fig2 = fig2.add_trace(go.Scatter(x=[_dataG.min(), _dataG.max()], y=[data['wind'].min(), data['wind'].max()], mode='lines', name='Línea y=x'))
+    fig2 = fig2.add_trace(go.Scatter(x=_dataG, y=data['WIND'], mode='markers', name='Datos'))
+    fig2 = fig2.add_trace(go.Scatter(x=[_dataG.min(), _dataG.max()], y=[data['WIND'].min(), data['WIND'].max()], mode='lines', name='Línea y=x'))
     fig2.update_layout(
         title='Gráfica de dispersión',
         xaxis_title=_yaxisTitulo,
@@ -204,11 +204,6 @@ def plot_data(_Variable):
         yaxis=dict(showgrid=True, gridcolor='lightgrey'),
         xaxis=dict(showline=True, linewidth=2, linecolor='black')
         )
-
-
-
-
- 
 
    
     return fig, fig1, fig2, fig5, fig6
