@@ -16,8 +16,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Usar Database para obtener datos
-with DatabaseManager("BDK_owner", "Qde9y0ftCPVg", "ep-rapid-recipe-a57yu1fp.us-east-2.aws.neon.tech", "5432", "BDK") as db:
-    data = db.fetch_data("SELECT * FROM wind")
+#with DatabaseManager("BDK_owner", "Qde9y0ftCPVg", "ep-rapid-recipe-a57yu1fp.us-east-2.aws.neon.tech", "5432", "BDK") as db:
+    #data = db.fetch_data("SELECT * FROM wind")
+data = pd.read_csv("D:/Dataviz/SpeedWind/SpeedWindDash/src/data/wind_dataset2.csv")
 
 dash.register_page(__name__, name='3-Arima - Sarima', title='Wind | 3-Arima')
 
@@ -111,7 +112,7 @@ layout = dbc.Container([
     )
 def plot_data(_NumSlider,_StartBtn):
     _data = data.iloc[:6574]
-    _dataW = _data['wind']
+    _dataW = _data['WIND']
     _year = 1961
     n_Wind = len(_data)
     
@@ -152,7 +153,7 @@ def plot_data(_NumSlider,_StartBtn):
     _test_output = dbc.Alert(children=['AIC: {:.4f}'.format(best_aic),html.Br(),'Orden ',html.B(str(best_order), className='alert-bold')], color='success')
 
     # Fit model
-    _best_model = SARIMAX(data['wind'], order=(1, 1, 1), seasonal_order=(0, 0, 0, 0)).fit(disp=-1)
+    _best_model = SARIMAX(data['WIND'], order=(1, 1, 1), seasonal_order=(0, 0, 0, 0)).fit(disp=-1)
     horizon = 365  # número de días en un mes
     _model_forecast = _best_model.get_forecast(steps=horizon)
     prediction_mean = _model_forecast.predicted_mean
@@ -160,7 +161,7 @@ def plot_data(_NumSlider,_StartBtn):
     ############################################
     # Crear la figura y añadir los datos históricos y las predicciones
     fig = go.Figure(layout=my_figlayout)
-    fig.add_trace(go.Scatter(x=data.index, y=data['wind'], mode='lines', name='Historical Wind Speed'))
+    fig.add_trace(go.Scatter(x=data.index, y=data['WIND'], mode='lines', name='Historical Wind Speed'))
     fig.add_trace(go.Scatter(x=prediction_mean.index, y=prediction_mean, mode='lines', name='Forecast'))
 
     # Añadir intervalos de confianza

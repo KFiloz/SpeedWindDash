@@ -13,8 +13,8 @@ import seaborn as sns
 
 
 # Usar Database para obtener datos
-#data = pd.read_csv("D:\Dataviz\SpeedWind\SpeedWindDash\src\data\wind_dataset2.csv")
-data = pd.read_csv("src/data/wind_dataset2.csv")
+data = pd.read_csv("D:/Dataviz/SpeedWind/SpeedWindDash/src/data/wind_dataset2.csv")
+
 
 
 dash.register_page(__name__, name='1-EDA', title='Wind | EDA')

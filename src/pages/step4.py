@@ -17,8 +17,10 @@ _trainp = 80
 
 
 # Usar Database para obtener datos
-with DatabaseManager("BDK_owner", "Qde9y0ftCPVg", "ep-rapid-recipe-a57yu1fp.us-east-2.aws.neon.tech", "5432", "BDK") as db:
-    data = db.fetch_data("SELECT * FROM wind")
+#with DatabaseManager("BDK_owner", "Qde9y0ftCPVg", "ep-rapid-recipe-a57yu1fp.us-east-2.aws.neon.tech", "5432", "BDK") as db:
+    #data = db.fetch_data("SELECT * FROM wind")
+
+data = pd.read_csv("D:/Dataviz/SpeedWind/SpeedWindDash/src/data/wind_dataset2.csv")
 
 dash.register_page(__name__, name='4-Vector Autoregression - Exponential Smoothing', title='Wind | 4-VAR')
 
@@ -100,17 +102,17 @@ def results(_Modelo,_StartBtn):
     _data = data.iloc[:6574]
     # Creando un DataFrame directamente con solo las columnas de interés
     _df = pd.DataFrame({
-        'wind': _data['wind'],
-        'rain': _data['rain'],
-        't_max': _data['t_max'],
-        't_min': _data['t_min'],
-     't_min_g': _data['t_min_g']
+        'wind': _data['WIND'],
+        'rain': _data['RAIN'],
+        't_max': _data['T.MAX'],
+        't_min': _data['T.MIN'],
+     't_min_g': _data['T.MIN.G']
     })
-    _df = _data[['wind', 'rain', 't_max', 't_min', 't_min_g','date']].copy()
+    _df = _data[['WIND', 'RAIN', 'T.MAX', 'T.MIN', 'T.MIN.G','DATE']].copy()
    
    
-    _df['date'] = pd.to_datetime(_df['date'])
-    _df.set_index('date', inplace=True)
+    _df['DATE'] = pd.to_datetime(_df['DATE'])
+    _df.set_index('DATE', inplace=True)
     _df = _df.apply(pd.to_numeric)
    
 
@@ -127,7 +129,7 @@ def results(_Modelo,_StartBtn):
            
             title_ = html.P([html.B(['Exponential Smoothing'])], className='par')
             NomModelo = [html.Hr([], className = 'hr-footer'), title_]
-            model = ExponentialSmoothing(data['wind'], trend='add', seasonal='add', seasonal_periods=500).fit()
+            model = ExponentialSmoothing(data['WIND'], trend='add', seasonal='add', seasonal_periods=500).fit()
             pred = model.forecast(365)
             _title = 'Wind Speed Forecast Usando Exponential Smoothing'
             _datax = pred.index
@@ -154,7 +156,7 @@ def results(_Modelo,_StartBtn):
            
             _title = 'Wind Speed Forecast Using Vector Autoregression (VAR)'
             _datax = forecast_df.index
-            _datay = forecast_df['wind']
+            _datay = forecast_df['WIND']
                
      
     else:
@@ -166,7 +168,7 @@ def results(_Modelo,_StartBtn):
     fig = go.Figure(layout=my_figlayout)
 
     # Añadir datos históricos
-    fig.add_trace(go.Scatter(x=data.index, y=data['wind'], mode='lines', name='Historical Wind Speed'))
+    fig.add_trace(go.Scatter(x=data.index, y=data['WIND'], mode='lines', name='Historical Wind Speed'))
 
     # Añadir predicciones
     fig.add_trace(go.Scatter(x=_datax, y=_datay, mode='lines', name='Forecasted Wind Speed'))
