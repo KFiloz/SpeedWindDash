@@ -9,8 +9,10 @@ from statsmodels.tsa.stattools import adfuller
 from assets.database import DatabaseManager
 
 # Usar Database para obtener datos
-with DatabaseManager("BDK_owner", "Qde9y0ftCPVg", "ep-rapid-recipe-a57yu1fp.us-east-2.aws.neon.tech", "5432", "BDK") as db:
-    data = db.fetch_data("SELECT * FROM wind")
+#with DatabaseManager("BDK_owner", "Qde9y0ftCPVg", "ep-rapid-recipe-a57yu1fp.us-east-2.aws.neon.tech", "5432", "BDK") as db:
+    #data = db.fetch_data("SELECT * FROM wind")
+
+data = pd.read_csv("assets/wind_dataset2.csv")
 
 dash.register_page(__name__, name='2- Estacionalidad', title='Wind | Estacionalidad')
 
@@ -113,10 +115,10 @@ layout = dbc.Container([
 
 def data_transform(_year):
     _data = data.iloc[:6574]
-    _dataW = _data['wind']
+    _dataW = _data['WIND']
     _year = _year
 
-    years = _data['year'].unique()
+    years = _data['YEAR'].unique()
 
     # Perform test
     stat_test = adfuller(_dataW)
@@ -142,19 +144,19 @@ def data_transform(_year):
     fig2.update_layout(title='Transformed Data Linechart', xaxis_title='Time', yaxis_title='_yaxisTitulo')
     fig2.update_traces(overwrite=True, line=my_linelayout)
     # ACF, PACF
-    fig3, fig4 = acf_pacf(_data, 'wind')
+    fig3, fig4 = acf_pacf(_data, 'WIND')
    
 
     fig5 = None
     fig5 = go.Figure(layout=my_figlayout)
-    filtered_df = _data[_data['year'] == _year]
+    filtered_df = _data[_data['YEAR'] == _year]
     
   
     fig5.add_trace(go.Scatter(x=filtered_df.index, y=_dataW, mode='lines', name=str(_year)))
     
     fig5.update_layout(title='Grafico de serie temporal por cada año', 
                       xaxis_title=_year, 
-                      yaxis_title='Wind',
+                      yaxis_title='WIND',
                         height = 500)
     fig5.update_traces(overwrite=True, line=my_linelayout)
 
