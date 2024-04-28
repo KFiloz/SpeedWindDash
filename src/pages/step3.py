@@ -71,25 +71,6 @@ layout = dbc.Container([
         dbc.Col([], width = 3)
     ]),
 
-     ######## DROPDOWN ############################3
-    dbc.Row([
-        dbc.Col(width=2),
-        dbc.Col([html.P(['parametros (p,d,q): '], className='par')], width=3),
-        dbc.Col([dcc.Dropdown(options=_opts, placeholder='p', value=0, clearable=False, searchable=True, persistence=True, persistence_type='memory', id='p-fin5')], width=1),
-        dbc.Col([dcc.Dropdown(options=_opts, placeholder='d', value=1, clearable=False, searchable=True, persistence=True, persistence_type='memory', id='d-fin5')], width=1),
-        dbc.Col([dcc.Dropdown(options=_opts, placeholder='q', value=1, clearable=False, searchable=True, persistence=True, persistence_type='memory', id='q-fin5')], width=1),  
-        dbc.Col(width=2)
-    ]),
-    html.Br(),
-    dbc.Row([
-        dbc.Col(width=2),
-        dbc.Col([html.P(['parametros (P,D,Q,m): '], className='par')], width=3),
-        dbc.Col([dcc.Dropdown(options=_opts, placeholder='P', value=0, clearable=False, searchable=True, persistence=True, persistence_type='memory', id='sp-fin5')], width=1),
-        dbc.Col([dcc.Dropdown(options=_opts, placeholder='D', value=1, clearable=False, searchable=True, persistence=True, persistence_type='memory', id='sd-fin5')], width=1),
-        dbc.Col([dcc.Dropdown(options=_opts, placeholder='Q', value=1, clearable=False, searchable=True, persistence=True, persistence_type='memory', id='sq-fin5')], width=1),
-        dbc.Col([dcc.Dropdown(options=_opts, placeholder='m', value=12, clearable=False, searchable=True, persistence=True, persistence_type='memory', id='sm-fin5')], width=1),
-        dbc.Col(width=2)
-    ]),
     html.Br(),
 
     ######## GRAFICA #########
@@ -126,16 +107,9 @@ layout = dbc.Container([
 
     #Output(component_id='fig-pacf', component_property='figure'),
     Input(component_id='train-slider6', component_property='value'),
-    Input(component_id='p-fin5', component_property='value'),
-    Input(component_id='d-fin5', component_property='value'),
-    Input(component_id='q-fin5', component_property='value'),
-    Input(component_id='sp-fin5', component_property='value'),
-    Input(component_id='sd-fin5', component_property='value'),
-    Input(component_id='sq-fin5', component_property='value'),
-    Input(component_id='sm-fin5', component_property='value'),
     Input(component_id='start-gs15', component_property='n_clicks'),
     )
-def plot_data(_NumSlider,_p, _d, _q, _P, _D, _Q, _m,_StartBtn):
+def plot_data(_NumSlider,_StartBtn):
     _data = data.iloc[:6574]
     _dataW = _data['wind']
     _year = 1961
@@ -150,13 +124,6 @@ def plot_data(_NumSlider,_p, _d, _q, _P, _D, _Q, _m,_StartBtn):
     dates_train = _data.date[:train_size]
     test = _data.wind[train_size:train_size + n_test] 
     dates_test = _data.date[train_size:train_size + n_test] 
-    a = _p
-    b = _d
-    c = _q
-    d = _P
-    e = _D
-    f = _Q
-    g = _m    
     ###################### AIC ####
     best_aic = np.inf
     best_bic = np.inf
@@ -185,7 +152,7 @@ def plot_data(_NumSlider,_p, _d, _q, _P, _D, _Q, _m,_StartBtn):
     _test_output = dbc.Alert(children=['AIC: {:.4f}'.format(best_aic),html.Br(),'Orden ',html.B(str(best_order), className='alert-bold')], color='success')
 
     # Fit model
-    _best_model = SARIMAX(data['wind'], order=(_p, _d, _q), seasonal_order=(_P, _D, _Q, _m)).fit(disp=-1)
+    _best_model = SARIMAX(data['wind'], order=(1, 1, 1), seasonal_order=(0, 0, 0, 0)).fit(disp=-1)
     horizon = 365  # número de días en un mes
     _model_forecast = _best_model.get_forecast(steps=horizon)
     prediction_mean = _model_forecast.predicted_mean

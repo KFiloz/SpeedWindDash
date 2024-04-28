@@ -127,7 +127,7 @@ def results(_Modelo,_StartBtn):
            
             title_ = html.P([html.B(['Exponential Smoothing'])], className='par')
             NomModelo = [html.Hr([], className = 'hr-footer'), title_]
-            model = ExponentialSmoothing(data['wind'], trend='add', seasonal='add', seasonal_periods=1500).fit()
+            model = ExponentialSmoothing(data['wind'], trend='add', seasonal='add', seasonal_periods=500).fit()
             pred = model.forecast(365)
             _title = 'Wind Speed Forecast Usando Exponential Smoothing'
             _datax = pred.index
