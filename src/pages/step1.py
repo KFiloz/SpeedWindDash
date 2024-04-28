@@ -11,9 +11,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-
-# Usar Database para obtener datos
-#data = pd.read_csv("D:/Dataviz/SpeedWind/SpeedWindDash/src/data/wind_dataset2.csv")
 data = pd.read_csv("assets/wind_dataset2.csv")
 
 
@@ -103,7 +100,7 @@ layout = dbc.Container([
     Input(component_id='p-from9', component_property='value')
     )
 def plot_data(_Variable):
-    _data = data.iloc[:2500]
+    _data = data.iloc[:6574]
     _dataG = _data['WIND']
     _titulo  = 'Wind Speed'
     _tituloD = 'Distribucción Wind Speed'

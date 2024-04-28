@@ -15,10 +15,6 @@ from datetime import datetime, timedelta
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# Usar Database para obtener datos
-#with DatabaseManager("BDK_owner", "Qde9y0ftCPVg", "ep-rapid-recipe-a57yu1fp.us-east-2.aws.neon.tech", "5432", "BDK") as db:
-    #data = db.fetch_data("SELECT * FROM wind")
-#data = pd.read_csv("D:/Dataviz/SpeedWind/SpeedWindDash/src/data/wind_dataset2.csv")
 data = pd.read_csv("assets/wind_dataset2.csv")
 
 dash.register_page(__name__, name='3-Arima - Sarima', title='Wind | 3-Arima')
@@ -122,10 +118,10 @@ def plot_data(_NumSlider,_StartBtn):
 
     n_test = n_Wind - _trainD
     train_size = _trainD
-    train = _data.wind[:train_size]
-    dates_train = _data.date[:train_size]
-    test = _data.wind[train_size:train_size + n_test] 
-    dates_test = _data.date[train_size:train_size + n_test] 
+    train = _data.WIND[:train_size]
+    dates_train = _data.DATE[:train_size]
+    test = _data.WIND[train_size:train_size + n_test] 
+    dates_test = _data.DATE[train_size:train_size + n_test] 
     ###################### AIC ####
     best_aic = np.inf
     best_bic = np.inf

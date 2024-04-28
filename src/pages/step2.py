@@ -8,9 +8,6 @@ from pmdarima.utils import diff
 from statsmodels.tsa.stattools import adfuller
 from assets.database import DatabaseManager
 
-# Usar Database para obtener datos
-#with DatabaseManager("BDK_owner", "Qde9y0ftCPVg", "ep-rapid-recipe-a57yu1fp.us-east-2.aws.neon.tech", "5432", "BDK") as db:
-    #data = db.fetch_data("SELECT * FROM wind")
 
 data = pd.read_csv("assets/wind_dataset2.csv")
 
@@ -116,9 +113,8 @@ layout = dbc.Container([
 def data_transform(_year):
     _data = data.iloc[:6574]
     _dataW = _data['WIND']
-    _year = _year
-
-    years = _data['YEAR'].unique()
+   
+  
 
     # Perform test
     stat_test = adfuller(_dataW)
